@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weapon Card Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .weapon-card {
+            border: 2px solid #333;
+            border-radius: 10px;
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .weapon-card h2 {
+            color: #444;
+        }
+
+        .weapon-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f9f9f9;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #loading {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weapon Card Generator</h1>
+    <button id="generateButton">Generate Weapon</button>
+    <div id="loading">Generating weapon...</div>
+    <div id="weapon-container"></div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:5000/generate-weapon';
+
+        async function generateWeaponData() {
+            const response = await fetch(API_URL);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        }
+
+        function createWeaponCard(weapon) {
+            return `
+                <div class="weapon-card">
+                    <h2>${weapon.name || "Mysterious Weapon"}</h2>
+
+                    <!-- Weapon image section -->
+                    ${weapon.image_url ? `<img src="${weapon.image_url}" alt="Weapon Image" class="weapon-image">` : ''}
+
+                    <div class="weapon-details">
+                        <p><strong>Type:</strong> ${weapon.type || "Unknown"}</p>
+                        <p><strong>Element:</strong> ${weapon.element || "None"}</p>
+                        <p><strong>Rarity:</strong> ${weapon.rarity || "Unknown"}</p>
+                    </div>
+
+                    <div class="weapon-stats">
+                        <p class="section-title">Weapon Stats:</p>
+                        <ul>
+                            ${Object.entries(weapon.stats || {}).length > 0 
+                                ? Object.entries(weapon.stats).map(([key, value]) => 
+                                    `<li>${key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}: ${value}</li>`
+                                ).join('') 
+                                : "<li>No stats available</li>"
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="abilities">
+                        <p class="section-title">Special Ability:</p>
+                        <ul>
+                            <li><strong>${weapon.special_ability || "None"}</strong></li>
+                            <li>${weapon.ability_effect || "No effect"}</li>
+                            <li>Cooldown: ${weapon.cooldown || "None"}</li>
+                        </ul>
+                    </div>
+
+                    <div class="passive-effect">
+                        <p class="section-title">Passive Effect:</p>
+                        <ul>
+                            <li><strong>${weapon.passive_effect || "None"}</strong></li>
+                            <li>${weapon.passive_effect_description || "No effect"}</li>
+                            <li>Trigger Condition: ${weapon.trigger_condition || "None"}</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function generateWeaponCard() {
+            const loadingElement = document.getElementById('loading');
+            const containerElement = document.getElementById('weapon-container');
+
+            loadingElement.style.display = 'block';
+            containerElement.innerHTML = '';
+
+            try {
+                const weapon = await generateWeaponData();
+                console.log("Received weapon data:", weapon); // For debugging
+                containerElement.innerHTML = createWeaponCard(weapon);
+            } catch (error) {
+                containerElement.innerHTML = `<p class="error">Error generating weapon: ${error.message}</p>`;
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        }
+        document.getElementById('generateButton').addEventListener('click', generateWeaponCard);
+    </script>
+</body>
+</html>
