@@ -1,0 +1,208 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden; /* Added to prevent horizontal scroll on small screens */
+}
+
+h1 {
+    color: #ff6b6b;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-size: 3rem; /* Larger font for more impact */
+    margin-bottom: 20px;
+}
+
+.asset-card {
+    background: linear-gradient(145deg, #16213e, #0f3460);
+    border: 2px solid #4a4e69;
+    border-radius: 15px;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Increased shadow depth for stronger effect */
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition for hover effects */
+}
+
+.asset-card:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); /* Enhanced shadow on hover */
+}
+
+.asset-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%); /* Increased opacity for more glow */
+    transform: rotate(45deg); /* More aggressive rotation */
+    pointer-events: none;
+}
+
+.asset-card h2 {
+    color: #ffd700;
+    text-align: center;
+    margin-top: 0;
+    font-size: 24px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    letter-spacing: 1px; /* Added letter spacing for a cleaner look */
+}
+
+.asset-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #4a4e69;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease; /* Smooth transition for hover */
+}
+
+.asset-image:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Increased shadow on image hover */
+}
+
+.asset-details, .asset-stats {
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.asset-details:hover, .asset-stats:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Slight change on hover */
+}
+
+.section-title {
+    font-weight: bold;
+    color: #4ecca3;
+    margin-bottom: 10px;
+    font-size: 20px; /* Increased font size for better readability */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+}
+
+li:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Added hover effect */
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+button:hover {
+    background-color: #ff8787;
+    transform: translateY(-3px); /* Slightly more aggressive hover lift */
+    box-shadow: 0 7px 25px rgba(255, 107, 107, 0.7);
+}
+
+#loading {
+    display: none;
+    margin-top: 20px;
+    color: #4ecca3;
+    font-size: 18px;
+    text-align: center;
+}
+
+.error {
+    color: #ff6b6b;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem; /* Larger font for error messages */
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px #4ecca3;
+    }
+    50% {
+        box-shadow: 0 0 20px #4ecca3;
+    }
+    100% {
+        box-shadow: 0 0 5px #4ecca3;
+    }
+}
+
+.glow {
+    animation: glow 2s infinite;
+}
+
+#asset-management {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+    gap: 2%; /* Added gap for better spacing */
+}
+
+#asset-list, #asset-display {
+    width: 48%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease; /* Added transition for hover effect */
+}
+
+#asset-list:hover, #asset-display:hover {
+    transform: translateY(-5px); /* Added hover lift effect */
+}
+
+.asset-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.asset-list li {
+    margin-bottom: 10px;
+    transition: transform 0.3s ease; /* Smooth animation on hover */
+}
+
+.asset-list li:hover {
+    transform: translateX(5px); /* Slight move to right on hover */
+}
+
+.asset-list a {
+    color: #4ecca3;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.asset-list a:hover {
+    color: #ff6b6b;
+}
